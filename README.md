@@ -69,5 +69,6 @@ webApp_base 와 비교하여 추가된 기능들
 <img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img2.png" alt="html 장면2" width="500" height="500">
 <img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img3.png" alt="html 장면3" width="500" height="500">
 <img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img4.png" alt="html 장면4" width="500" height="300">
+
 ### 4.3 html에 있는 script를 js/contact.js로 분리. 
 <img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img5.png" alt="html 장면5" width="300" height="300">
