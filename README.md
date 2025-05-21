@@ -64,6 +64,10 @@ python app.py
 ## 4. 추가된 기능
 webApp_base 와 비교하여 추가된 기능들
 ### 4.1 사진을 선택하면 미리보기로 보여준 후 업로드를 하면 서버에 사진이 저장되며 addbook.txt에 이름 전화번호 생일 사진이름이 저장.
+<img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img6.png" alt="html 장면6" width="300" height="300">
+<img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img7.png" alt="html 장면7" width="300" height="300">
+<img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img8.png" alt="html 장면8" width="300" height="300">
+
 ### 4.2 웹캠을 클릭하여 사진을 업로드하는 대신에 웹캠으로 사진을 찍어서 서버에 저장.
 <img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img1.png" alt="html 장면1" width="500" height="500">
 <img src="https://github.com/jjkkhh123/webApp_WebCam/blob/main/static/images/img2.png" alt="html 장면2" width="500" height="500">
