@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 관리</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>회원 관리</h1>
+    <form id="contactForm" action="/add" method="post" enctype="multipart/form-data">
+        <label for="name">이름  :</label>
+        <input type="text" id="name" name="pyname" required>
+        <br><br>
+        <label for="phone">전화번호:</label>
+        <input type="text" id="phone" name="pyphone" placeholder="ex)000-0000-0000" required>
+        <br><br>
+        <label for="birth">생년월일:</label>
+        <input type="date" id="birth" name="pybirth" required>
+        <br><br>
+        <label for="photo">사진 선택:</label>
+        <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(event)">
+        <button type="button" onclick="openCamera()">웹캠 촬영</button>
+        <br><br>
+        <video id="video" width="200" autoplay style="display:none;"></video>
+        <canvas id="canvas" width="200" height="150" style="display:none;"></canvas>
+        <img id="preview" src="#" alt="사진 미리보기" style="display:none; max-width:200px;"/>
+        <input type="hidden" id="webcamImage" name="webcamImage">
+        <br><br>
+        <button type="submit">Add Contact</button>
+    </form>
+    <script>
+    // 파일 선택 미리보기
+    function previewImage(event) {
+        const preview = document.getElementById('preview');
+        const file = event.target.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            document.getElementById('webcamImage').value = '';
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+    }
+
+    // 웹캠 열기
+    function openCamera() {
+        const video = document.getElementById('video');
+        video.style.display = 'block';
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                // 촬영 버튼 추가
+                if (!document.getElementById('captureBtn')) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.id = 'captureBtn';
+                    btn.innerText = '촬영';
+                    btn.onclick = capturePhoto;
+                    video.parentNode.insertBefore(btn, video.nextSibling);
+                }
+            });
+    }
+
+    // 사진 촬영
+    function capturePhoto() {
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const preview = document.getElementById('preview');
+        const context = canvas.getContext('2d');
+        canvas.style.display = 'block';
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // 미리보기
+        const dataURL = canvas.toDataURL('image/png');
+        preview.src = dataURL;
+        preview.style.display = 'block';
+        // 히든필드에 저장
+        document.getElementById('webcamImage').value = dataURL;
+        // 웹캠 종료
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        video.style.display = 'none';
+        // 촬영 버튼 숨기기
+        const btn = document.getElementById('captureBtn');
+        if (btn) btn.style.display = 'none';
+        // 파일 선택값 초기화
+        document.getElementById('photo').value = '';
+    }
+
+    // 폼 제출 시 webcamImage가 있으면 FormData로 전송
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        const webcamImage = document.getElementById('webcamImage').value;
+        if (webcamImage) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            // dataURL을 Blob으로 변환
+            fetch(webcamImage)
+                .then(res => res.blob())
+                .then(blob => {
+                    formData.set('photo', blob, 'webcam.png');
+                    fetch('/add', {
+                        method: 'POST',
+                        body: formData
+                    }).then(() => window.location.reload());
+                });
+        }
+    });
+    </script>
+</body>
+</html>
